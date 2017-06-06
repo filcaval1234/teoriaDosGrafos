@@ -24,7 +24,9 @@ while True:
     listaAresta = quebraAresta(aresta)
     listaNo = quebraTexto(no)
 
-    grafo = Grafo(N=listaNo, A=criaDicionario(listaChave=listaAresta, listaValor=listaLigacao))
-    print(grafo)
+    print(listaAresta, listaLigacao)
+    grafo1 = Grafo(N=listaNo, A=criaDicionario(listaChave=listaAresta, listaValor=listaLigacao))
+    grafo1.colocaMatriz(criaDicionario(listaChave=listaAresta, listaValor=listaLigacao), listaNo)
+    grafo1.printMatriz()
 # a, b, c, d, e
 # a1(a-b), a2(b-c), a3(d-e), a4(a-e)

@@ -27,6 +27,41 @@ class Grafo:
                 raise ArestaInvalidaException('A aresta ' + A[a] + ' é inválida')
 
         self.A = A
+        self.representa_grafo =[]
+
+    def criaMatriz(self, n, matriz=[]):
+        ''' Cria a matriz tamanho nXn e acrescenta traço"-" em cada posição, essa matriz vai ser
+         para a representação da matriz de adjacências'''
+        for i in range(len(n)):
+            matriz.append([])
+        for k in matriz:
+            for j in range(len(matriz)):
+                k.append("-")
+        return matriz
+
+    def InserirMatrizRepresentacao(self, a ,n):
+        '''Função que recebe inicialmente o conjunto de aresta e os Nós aparti de então
+        converte para a matriz de adjacências'''
+        matriz = self.criaMatriz(n)
+        existe_aresta = 1
+        for i in a:
+            i_traco = a[i].index("-")
+            x = n.index(a[i][:i_traco])
+            y = n.index(a[i][i_traco+1:])
+            if y > x and y != x:
+                matriz[x][y] = existe_aresta
+            elif x > y and y != x:
+                matriz[y][x] = existe_aresta
+
+        for j in range(len(matriz)):
+            for k in range(len(matriz)):
+                if j < k and matriz[j][k] != existe_aresta:
+                    matriz[j][k] = 0
+        self.representaAresta = matriz
+        return matriz
+
+    def retornMatriz(self):
+        return self.representa_grafo
 
     def arestaValida(self, aresta=''):
         '''
@@ -100,12 +135,12 @@ class Grafo:
         else:
             ArestaInvalidaException('A aresta ' + self.A[a] + ' é inválida')
 
-    def __str__(self):
-        '''
+    '''def __str__(self):
+        
         Fornece uma representação do tipo String do grafo.
         O String contém um sequência dos vértices separados por vírgula, seguido de uma sequência das arestas no formato padrão.
         :return: Uma string que representa o grafo
-        '''
+        
         grafo_str = ''
 
         for v in range(len(self.N)):
@@ -120,7 +155,7 @@ class Grafo:
             if not(i == len(self.A) - 1): # Só coloca a vírgula se não for a última aresta
                 grafo_str += ", "
 
-        return grafo_str
+        return grafo_str'''
 
 
 

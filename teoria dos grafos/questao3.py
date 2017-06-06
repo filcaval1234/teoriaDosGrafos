@@ -1,8 +1,8 @@
-from grafo import Grafo
+from grafo123 import Grafo
 
-grafo = Grafo(N=["a","b","c","d","e","f"], A={"a1":"a-b", "a2":"b-d", "a3": "b-c", "a3":"c-e", "a4":"c-f"})
+grafo = Grafo(N=["a","b","c","d","e","f"], A={"a1":"a-b", "a2":"b-d", "a3": "b-c", "a3":"c-e", "a4":"c-f", "a5":"b-c", "a6": "b-a"})
 ligacao = grafo.A
-print(ligacao)
+#print(ligacao)
 
 def retornaSegundoNo(string):
     segundoNo = ''
@@ -21,15 +21,21 @@ def retornaPrimeiroNo(string):
 def naoAdjacente(dicionarioLigacao):
     aresta = []
     nAdj = []
+    traco = "-"
     for i in dicionarioLigacao:
         aresta.append(dicionarioLigacao[i])
-    for i in aresta:
-        for j in aresta:
-            if i[0] not in j:
-                nAdj.append(i[0]+"-"+retornaSegundoNo(j))
+    for i in range(len(aresta)):
+        recbPop = aresta.pop()
+        recbPop = recbPop.split("-")
+        for i in recbPop:
+            for j in aresta:
+                if i not in j:
+                    if i+"-"+j[j.index(traco)+1:] not in nAdj and j[j.index(traco)+1:]+"-"+i not in nAdj:
+                        nAdj.append(i+"-"+j[j.index(traco)+1:])
+
     return nAdj
 
-print(naoAdjacente(ligacao))
+#print(naoAdjacente(ligacao))
 
 def criaListaLigacao(dicionarioLigacao):
     aresta = []
@@ -42,11 +48,32 @@ def inverteString(string):
 
 def selfAdjacente(dicionarioLigacao):
     listaAresta = criaListaLigacao(dicionarioLigacao)
+    print(listaAresta)
     condicao = False
+    traco = "-"
+
     for i in listaAresta:
-        for j in range(1,len(listaAresta)):
-            if i == inverteString(listaAresta[j]):
-                condicao =  True
-                return condicao
-        if condicao is True: break
+        primeiro = i[:i.index(traco)]
+        ultimo = i[i.index(traco)+1:]
+        for i in listaAresta:
+            if ultimo+"-"+primeiro == i:
+                condicao = True
+                break
     return condicao
+
+#print(selfAdjacente(ligacao))
+
+def arestaParalelas(dicionarioLigacao):
+    listaAresta = criaListaLigacao(dicionarioLigacao)
+    print(listaAresta)
+    condicao = False
+    traco = "-"
+    for i in listaAresta:
+        ultimo = i[i.index(traco)+1:]
+        print(ultimo)
+        for j in listaAresta:
+            if ultimo == j[:j.index(traco)]:
+                condicao = True
+                break
+    return condicao
+print(arestaParalelas(ligacao))
