@@ -38,8 +38,41 @@ def grafoCompleto(matriz):
                 return False
     return True
 
+#-----------------------e esse trosso------------------------
+def conexo(matriz, listaDeConbinacao, k=0):
+    if len(listaDeConbinacao) is 0:
+        return "ALGUMA COISA"
+    arestaAdja = arestaExistente(matriz,k)
+    #if [b,c] not in listacomnb:
+    #   fazer alguma coisa
+    # else:
+    for i in range(len(arestaAdja[1])):
+        if listaDeConbinacao[k] is [arestaAdja[0], arestaAdja[1][i]]:
+            del(listaDeConbinacao[k])
+        #precisa de maisn coisa!!!!!!!!!!!!!!!!!
+    conexo(matriz, listaDeConbinacao, k+1)
+                
+#---------------------em cima--------------------------------
+    
+    
 
+def conbinacoes(matriz):
+    #esse trosso retorna um lista com todas as conbinacoes de caminhos possiveis
+    # retorna algo do tipo [x,y]
+    conbinacao = []
+    for i in range(len(matriz)):
+        for j in range(len(matriz)):
+            conbinacao.append([i,j])
+    return conbinacao
+
+def arestaExistente(matriz, index):
+    #esse trosso vai retornar algo do tipo [0,[1,2,3,5]]
+    arestaExiste = [index,[]]
+    for i in range(len(matriz)):
+        for j in range(len(matriz)):
+            if j == index and matriz[j] == 1:
+                arestaExiste[1].append(j)
+    return arestaExiste
 
 naoAdjacente(n, matriz)
 print(verificaGrau(matriz, "a", n))
-
