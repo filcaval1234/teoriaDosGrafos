@@ -1,6 +1,6 @@
 from grafo123 import Grafo
 n = ["a", "b", "c", "d", "e"]
-a = {"a1":"a-b", "a2":"b-c", "a3":"d-e", "a4":"a-e"}
+a = {"a1":"a-b", "a2":"b-c", "a3":"c-d", "a4":"a-e"}
 grafo = Grafo(N=n, A=a);
 matriz = grafo.colocaMatriz(a, n)
 print(type(matriz))
@@ -39,22 +39,42 @@ def grafoCompleto(matriz):
     return True
 
 #-----------------------e esse trosso------------------------
-def conexo(matriz, listaDeConbinacao, k=0):
-    if len(listaDeConbinacao) is 0:
-        return "ALGUMA COISA"
-    arestaAdja = arestaExistente(matriz,k)
-    #if [b,c] not in listacomnb:
-    #   fazer alguma coisa
-    # else:
-    for i in range(len(arestaAdja[1])):
-        if listaDeConbinacao[k] is [arestaAdja[0], arestaAdja[1][i]]:
-            del(listaDeConbinacao[k])
-        #precisa de maisn coisa!!!!!!!!!!!!!!!!!
-    conexo(matriz, listaDeConbinacao, k+1)
+def conexo(matriz, listaDeConbinacao):
+
+    for k in range(len(matriz)):
+        arestaAdja = arestaExistente(matriz, k)
+
+        for i in range(len(arestaAdja[1])):
+            if [arestaAdja[0], arestaAdja[1][i]] in listaDeConbinacao:
+                del(listaDeConbinacao[listaDeConbinacao.index([arestaAdja[0], arestaAdja[1][i]])])
+                if len(listaDeConbinacao) == 0:
+                    return True
+
+    for j in range(len(listaDeConbinacao)):
+        if procura(listaDeConbinacao[j][1],listaDeConbinacao[j][0]) == True:
+            listaDeConbinacao[j] = '#'
+
+    if listaDeConbinacao.count("#") == len(listaDeConbinacao):
+        return True
+    else: return False
+
                 
 #---------------------em cima--------------------------------
     
-    
+def procura(indiceDeProcura,procurado):
+    a = False
+    l = arestaExistente(matriz,indiceDeProcura,indiceDeProcura)
+    if procurado in l[1]:
+        a = True
+        return a
+    else:
+        try:
+            novoIndiceDeProcura = l[1][0]
+        except:
+            return a
+        del(l[1][0])
+        a = procura(indiceDeProcura=novoIndiceDeProcura,procurado=procurado)
+    return a
 
 def conbinacoes(matriz):
     #esse trosso retorna um lista com todas as conbinacoes de caminhos possiveis
@@ -62,17 +82,28 @@ def conbinacoes(matriz):
     conbinacao = []
     for i in range(len(matriz)):
         for j in range(len(matriz)):
-            conbinacao.append([i,j])
+            if i is not j and [j,i] not in conbinacao:
+                conbinacao.append([i,j])
     return conbinacao
 
-def arestaExistente(matriz, index):
+def arestaExistente(matriz, index, numeroHaSerRetirado=-1):
     #esse trosso vai retornar algo do tipo [0,[1,2,3,5]]
     arestaExiste = [index,[]]
     for i in range(len(matriz)):
-        for j in range(len(matriz)):
-            if j == index and matriz[j] == 1:
-                arestaExiste[1].append(j)
+        if matriz[index][i] == 1:
+            arestaExiste[1].append(i)
+        #if matriz[index].count(1) == 0:
+        if matriz[i][index] == 1:
+            arestaExiste[1].append(i)
+        if numeroHaSerRetirado in arestaExiste[1]:
+            del(arestaExiste[arestaExiste.index(numeroHaSerRetirado)])
     return arestaExiste
 
-naoAdjacente(n, matriz)
-print(verificaGrau(matriz, "a", n))
+#naoAdjacente(n, matriz)
+for i in matriz:
+    print(i)
+conbinac = conbinacoes(matriz)
+print(conexo(matriz, listaDeConbinacao=conbinac))
+#print(conbinac)
+#print(procura(4,0))
+#print(verificaGrau(matriz, "a", n))
